@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/venv,linux,python,pycharm,windows
-# Edit at https://www.gitignore.io/?templates=venv,linux,python,pycharm,windows
+# Created by https://www.gitignore.io/api/linux,python,pycharm,windows
+# Edit at https://www.gitignore.io/?templates=linux,python,pycharm,windows
 
 ### Linux ###
 *~
@@ -210,19 +210,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-### venv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
-pyvenv.cfg
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-pip-selfcheck.json
-
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -249,4 +236,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/venv,linux,python,pycharm,windows
+# End of https://www.gitignore.io/api/linux,python,pycharm,windows
