@@ -6,15 +6,15 @@ max = 10            # Inhoud emmer, L
 waterniveau = 0.0   # Startwaarde inhoud emmer, L
 toevoer = 0.1       # Watertoevoer, L/s
 
-maxIters = 10000.0  #Max aantal berekeningen
-tBeforeQuit = 5     # seconden waarin de emmer vol is/overstroomt voordat de grafiek stopt
+maxIters = 10000.0  # max calculations
+tBeforeQuit = 5     # seconds where the bucket is filled before the sim stops
 
+sPerT = 0.0001      # precision, steps per second
 #rgat = 2
 
 x = []
 y = []
 maxxed = 0
-sPerT = 0.001
 iters = 0.0
 
 while maxxed < (tBeforeQuit / sPerT) and iters < maxIters:
