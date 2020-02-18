@@ -11,11 +11,14 @@ def formule(V):
 
 maxV = 10           # Inhoud emmer, L
 V = 0.0             # Startwaarde inhoud emmer, L
-toevoer = 0.1       # Watertoevoer, L/s
-r_gat = 0.5         # radius hole, cm
+toevoer = 0.10      # Watertoevoer, L/s
+r_gat = 0.0000      # radius hole, cm
 
 maxSec = 400.0      # Max aantal gesimuleerde secondes
-sPerT = 1           # Precisie, simulaties per seconde
+sPerT = 0.0001      # Precisie, simulaties per seconde
+tabel = False        # Data in een tabel of een grafiek
+toCSV = "./out.csv" # Pad naar outputdocument, "" voor geen output
+dataLimiet = 1000    # Hoeveel van de data wordt opgeslagen/vertoond, 1 voor alles
 
 
 ##################### EINDE VARIABELEN #####################
@@ -68,6 +71,24 @@ while not maxxed and simSec < maxSec:
 ############################################################
 ###################### Grafiek maken #######################
 ############################################################
+
+if toCSV != "":
+    f = open(toCSV, "w")
+    f.write("Tijd,Volume\n")
+    for i in range(0, len(x), dataLimiet):
+        f.write(str(round_dec(x[i], 5)) + "," + str(round_dec(y[i], 5)) + '\n')
+    f.close()
+
+
+
+if tabel:
+    print("__________________")
+    print("|    x   |   y   |")
+    for a in range(0, len(x), 10000):
+        print("|\t"+str(x[a])+"\t|\t"+str(y[a])+"\t|")
+
+    print("|________________|")
+    exit()
 
 if maxxed:
 	x.append(round_up(simSec, 50))
