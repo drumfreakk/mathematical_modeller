@@ -17,6 +17,7 @@ r_gat = 0.5         # radius hole, cm
 maxSec = 400.0      # Max aantal gesimuleerde secondes
 sPerT = 1           # Precisie, simulaties per seconde
 
+
 ##################### EINDE VARIABELEN #####################
 ################# Verander niets hieronder #################
 ############################################################
