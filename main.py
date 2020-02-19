@@ -5,19 +5,17 @@
 ####### verander deze om de simulatie te veranderen ########
 ############################################################
 
-def formule(V):
-	return 0.19 * r_gat * r_gat * math.sqrt(V)
-
+formule = lambda V : 0.19 * r_gat * r_gat * math.sqrt(V)
 
 maxV = 10           # Inhoud emmer, L
 V = 0.0             # Startwaarde inhoud emmer, L
 toevoer = 0.10      # Watertoevoer, L/s
-r_gat = 0.0000      # radius hole, cm
+r_gat = 0.5000      # radius hole, cm
 
 maxSec = 400.0      # Max aantal gesimuleerde secondes
 sPerT = 0.0001      # Precisie, simulaties per seconde
 tabel = False        # Data in een tabel of een grafiek
-toCSV = "./out.csv" # Pad naar outputdocument, "" voor geen output
+toCSV = "/home/kip/out2.csv" # Pad naar outputdocument, "" voor geen output
 dataLimiet = 1000    # Hoeveel van de data wordt opgeslagen/vertoond, 1 voor alles
 
 
@@ -76,18 +74,19 @@ if toCSV != "":
     f = open(toCSV, "w")
     f.write("Tijd,Volume\n")
     for i in range(0, len(x), dataLimiet):
-        f.write(str(round_dec(x[i], 5)) + "," + str(round_dec(y[i], 5)) + '\n')
+        f.write(str(x[i]) + "," + str(y[i]) + '\n')
     f.close()
 
 
 
 if tabel:
-    print("__________________")
-    print("|    x   |   y   |")
-    for a in range(0, len(x), 10000):
-        print("|\t"+str(x[a])+"\t|\t"+str(y[a])+"\t|")
+    print("_________________________________")
+    print("|\tx\t|\ty\t|")
+    print("|_______________________________|")
+    for a in range(0, len(x), dataLimiet):
+        print("|\t"+str(round_dec(x[a], 3))+"\t|\t"+str(round_dec(y[a], 3))+"\t|")
 
-    print("|________________|")
+    print("|_______________________________|")
     exit()
 
 if maxxed:
