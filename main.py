@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-formula = lambda V : 0.19 * args.radius * args.radius * math.sqrt(V)
-
 import matplotlib.pyplot as plt
 import math
 import argparse
@@ -11,18 +9,19 @@ parser = argparse.ArgumentParser(usage="%(prog)s [OPTIONS]", description="A simp
 parser.add_argument("-r", "--radius",           type=float,         default=0.5,    metavar="CM",   help="radius of the hole in the bucket in cm (default: %(default)s)")
 parser.add_argument("-f", "--flow",             type=float,         default=0.1,    metavar="L/S",  help="flow of water in to the bucket in L/s (default: %(default)s)")
 parser.add_argument("-v", "--volume",           type=float,         default=10.0,   metavar="L",    help="volume of the bucket, L (default: %(default)s)")
-parser.add_argument("-V", "--starting-volume",  type=float,         default=0.0,    metavar="L",    help="starting amount of water in the bucket, L (default: %(default)s)")
+parser.add_argument(      "--starting-volume",  type=float,         default=0.0,    metavar="L",    help="starting amount of water in the bucket, L (default: %(default)s)")
 parser.add_argument("-c", "--chart",            action="store_true",                                help="display the results in a chart in the terminal")
-parser.add_argument("-d", "--datalimit",        type=int,           default=1000,   metavar="LIM",  help="set the amount of data to be displayed, with 1 for everything (default: %(default)s)")
+parser.add_argument(      "--datalimit",        type=int,           default=1000,   metavar="LIM",  help="set the amount of data to be displayed, with 1 for everything (default: %(default)s)")
 parser.add_argument("-o", "--ofile",                                default="",     metavar="F",    help="file to write the output to (default: \"%(default)s\")")
 parser.add_argument("-s", "--step",             type=float,         default=0.0001, metavar="STP",  help="time step, in seconds (default: %(default)s)")
 parser.add_argument("-D", "--digits",           type=int,           default=3,      metavar="DGT",  help="digits to round the output to (default: %(default)s)")
 parser.add_argument("-t", "--maxtime",          type=int,           default=100,    metavar="S",    help="maximum seconds to simulate (default: %(default)s)")
 
 args = parser.parse_args()
-print(args)
 
 content = args.starting_volume
+
+formula = lambda V : 0.19 * args.radius * args.radius * math.sqrt(V)
 
 x = []
 y = []
