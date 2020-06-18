@@ -1,38 +1,53 @@
 #!/usr/bin/python3
 
-############################################################
-######################## Variabelen ########################
-####### verander deze om de simulatie te veranderen ########
-############################################################
-
 formule = lambda V : 0.19 * r_gat * r_gat * math.sqrt(V)
 
 maxV = 10           # Inhoud emmer, L
 V = 0.0             # Startwaarde inhoud emmer, L
-toevoer = 0.10      # Watertoevoer, L/s
-r_gat = 0.5000      # radius hole, cm
 
-maxSec = 400.0      # Max aantal gesimuleerde secondes
-sPerT = 0.0001      # Precisie, simulaties per seconde
-tabel = False        # Data in een tabel of een grafiek
-toCSV = "/home/kip/out2.csv" # Pad naar outputdocument, "" voor geen output
-dataLimiet = 1000    # Hoeveel van de data wordt opgeslagen/vertoond, 1 voor alles
+toevoer_m = 9.0     # Watertoevoer, L/m
+#toevoer = toevoer_m / 60      # Watertoevoer, L/s
+toevoer = 0.1
+r_gat = 0.5000      # radius gat, cm
 
-
-##################### EINDE VARIABELEN #####################
-################# Verander niets hieronder #################
-############################################################
-
-############################################################
-######### Functies en variabelen voor de simulatie #########
-############################################################
+maxSec = 100.0      # Max aantal gesimuleerde secondes
+step = 0.0001      # Precisie, simulaties per seconde
+toCSV = "" # Pad naar outputdocument, "" voor geen output
+dataLimit = 1000    # Hoeveel van de data wordt opgeslagen/vertoond, 1 voor alles
+digits = 3
 
 import matplotlib.pyplot as plt
 import math
+import argparse
+
+parser = argparse.ArgumentParser(usage="%(prog)s [OPTIONS]", description="A simple simulation program for a bucket with a hole in it being filled with water")
+parser.add_argument("-r", type=float, default=r_gat, help="Radius of the hole in the bucket in cm (default: %(default)s)")
+parser.add_argument("-f", type=float, default=toevoer, help="Flow of water in to the bucket in L/s (default: %(default)s)")
+parser.add_argument("-v", type=float, default=maxV, help="Volume of the bucket, L (default: %(default)s)")
+parser.add_argument("-V", type=float, default=V, help="Starting amount of water in the bucket, L (default: %(default)s)")
+parser.add_argument("-c", "--chart", action="store_true", help="Display the results in a chart in the terminal")
+parser.add_argument("-d", "--datalimit", type=int, default=dataLimit, help="Set the amount of data to be displayed, with 1 for everything (default: %(default)s)")
+parser.add_argument("-o", "--ofile", default=toCSV, help="File to write the output to (default: \"%(default)s\")")
+parser.add_argument("-s", "--step", type=float, default=step, help="Timestep, in seconds (default: %(default)s)")
+parser.add_argument("-D", "--digits", type=int, default=digits, help="Digits to round the output to (default: %(default)s)")
+parser.add_argument("-t", "--maxtime", type=int, default=maxSec, help="Maximum seconds to simulate (default: %(default)s)")
+
+args = parser.parse_args()
+chart = args.chart
+dataLimit = args.datalimit
+toCSV = args.ofile
+step = args.step
+digits = args.digits
+maxSec = args.maxtime
+r_gat = args.r
+toevoer = args.f
+maxV = args.v
+V = args.V
+
 
 x = []
 y = []
-maxxed = False          # Is de emmer vol
+maxed = False          # Is de emmer vol
 simSec = 0.0            # gesimuleerde secondes
 
 
@@ -49,18 +64,18 @@ def round_dec(n, decimals=0):
 ######################## Simulatie #########################
 ############################################################
 
-while not maxxed and simSec < maxSec:
+while not maxed and simSec <= maxSec:
 	x.append(simSec)
 	y.append(V)
-	V += toevoer * sPerT
-	V -= formule(V) * sPerT
+	V -= formule(V) * step
+	V += toevoer * step
 	if V >= maxV:
 		V = maxV
-		maxxed = True
+		maxed = True
 	if V <= 0:
 		V = 0.0
 	# TODO: add on stable stop
-	simSec += sPerT
+	simSec += step
 
 ############################################################
 ###################### Einde simulatie #####################
@@ -73,26 +88,25 @@ while not maxxed and simSec < maxSec:
 if toCSV != "":
     f = open(toCSV, "w")
     f.write("Tijd,Volume\n")
-    for i in range(0, len(x), dataLimiet):
+    for i in range(0, len(x), dataLimit):
         f.write(str(x[i]) + "," + str(y[i]) + '\n')
     f.close()
 
 
 
-if tabel:
+if chart:
     print("_________________________________")
     print("|\tx\t|\ty\t|")
     print("|_______________________________|")
-    for a in range(0, len(x), dataLimiet):
-        print("|\t"+str(round_dec(x[a], 3))+"\t|\t"+str(round_dec(y[a], 3))+"\t|")
-
+    for a in range(0, len(x), dataLimit):
+        print("|\t"+str(round_dec(x[a], digits))+"\t|\t"+str(round_dec(y[a], digits))+"\t|")
     print("|_______________________________|")
     exit()
 
-if maxxed:
-	x.append(round_up(simSec, 50))
+if maxed:
+	x.append(round_up(simSec, 10))
 	y.append(y[-1])
-	axis = [0, round_up(simSec, 50), 0, 11]
+	axis = [0, round_up(simSec, 10), 0, 11]
 else:
 	axis = [0, maxSec, 0, 11]
 
